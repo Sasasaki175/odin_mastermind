@@ -7,7 +7,7 @@ class PlayerPick
       break if valid_player_pick?(@player_input)
       puts 'Invalid input please try again.'
     end
-    
+
     @player_input
   end
 
