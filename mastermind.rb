@@ -49,6 +49,8 @@ class MasterMind
 
       guesses_left -= 1
 
+      puts "Com guess: '#{@breaker_pick}'" if @player_role == 'm'
+
       puts "Correct position: #{match_chr(@secret_code, @breaker_pick)}"
       puts "Include number: #{include_chr(@secret_code, @breaker_pick)}"
       
