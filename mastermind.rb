@@ -6,12 +6,12 @@ class MasterMind
     puts "Input Codebreaker: 'b' or Codemaker: 'm'"
 
     loop do
-      @human_role = gets.chomp
-      break if ['b', 'm'].include?(@human_role)
+      @player_role = gets.chomp
+      break if ['b', 'm'].include?(@player_role)
       puts 'Invalid input please try again.'
     end
 
-    if @human_role == 'b'
+    if @player_role == 'b'
       @secret_code = CodePick.new.random_pick
     else
       puts 'Choose 4 pick colors from Blue, Green, Orange, Purple, Red, Yellow and concatenate the initials as secret code. e.g. bggr, rbrp, yogp.'
@@ -26,18 +26,20 @@ class MasterMind
   def play_game
     guesses_left = 10
 
-    puts 'Choose 4 pick colors from Blue, Green, Orange, Purple, Red, Yellow and concatenate the initials. e.g. bggr, rbrp, yogp.'
+    if @player_role == 'b'
+      puts 'Choose 4 pick colors from Blue, Green, Orange, Purple, Red, Yellow and concatenate the initials. e.g. bggr, rbrp, yogp.'
+    end
     
     #You can guess the code 10 times until you get it correct or game over
     10.times do
-      @player_pick = CodePick.new.get_player_input
+      @breaker_pick = CodePick.new.get_player_input
       guesses_left -= 1
-      puts "Correct position: #{match_chr(@secret_code, @player_pick)} Include number: #{include_chr(@secret_code, @player_pick)}"
-      break if @secret_code == @player_pick
+      puts "Correct position: #{match_chr(@secret_code, @breaker_pick)} Include number: #{include_chr(@secret_code, @breaker_pick)}"
+      break if @secret_code == @breaker_pick
       puts "Guesses left: #{guesses_left} Try again."
     end
 
-    did_player_win
+    did_breaker_win
   end
 
   #Compare two strings and return number of characters that match including position
@@ -54,8 +56,8 @@ class MasterMind
     inclusion
   end
 
-  def did_player_win
-    if @secret_code == @player_pick
+  def did_breaker_win
+    if @secret_code == @breaker_pick
       puts "You win!"
     else
       puts "You lose"
