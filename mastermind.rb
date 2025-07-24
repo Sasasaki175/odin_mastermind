@@ -34,8 +34,6 @@ class MasterMind
   end
 
   def play_game
-    guesses_left = 10
-
     @matched_picks = Array.new(4)
 
     if @player_role == 'b'
@@ -43,7 +41,14 @@ class MasterMind
       puts 'and concatenate the initials. e.g. bggr, rbrp, yogp.'
     end
     
-    # You can guess the code 10 times until you get it correct or game over
+    game_loop
+    did_breaker_win
+  end
+
+  def game_loop
+    guesses_left = 10
+
+    # You or the computer can guess the code 10 times
     10.times do
       breaker_pick
 
@@ -51,8 +56,8 @@ class MasterMind
 
       puts "Com guess: '#{@breaker_pick}'" if @player_role == 'm'
 
-      puts "Correct position: #{match_chr(@secret_code, @breaker_pick)}"
-      puts "Include number: #{include_chr(@secret_code, @breaker_pick)}"
+      puts "Correct position: #{positions_matched(@secret_code, @breaker_pick)}"
+      puts "Correct color: #{colors_matched(@secret_code, @breaker_pick)}"
       
       @matched_picks = matching_picks(@secret_code, @breaker_pick)
 
@@ -61,8 +66,6 @@ class MasterMind
       puts "Guesses left: #{guesses_left}"
       puts 'Try again.' if guesses_left.positive?
     end
-
-    did_breaker_win
   end
 
   def breaker_pick
@@ -74,15 +77,15 @@ class MasterMind
   end
 
   # Compare two strings and return number of characters that match including position
-  def match_chr(string_a, string_b)
+  def positions_matched(string_a, string_b)
     4.times.count { |i| string_a[i] == string_b[i] }
   end
 
   # Count and return number of shared characters
-  def include_chr(string_a, string_b)
+  def colors_matched(string_a, string_b)
     inclusion = 0
 
-    for chr in string_b.chars.uniq
+    string_b.chars.uniq.each do |chr|
       inclusion += [string_a.count(chr), string_b.count(chr)].min
     end
 
@@ -98,7 +101,7 @@ class MasterMind
     if @secret_code == @breaker_pick
       puts @player_role == 'b' ? 'You win!' : 'Com wins!'
     else
-      puts @player_role == 'b' ? "You lose. Secret code was #{@secret_code}." : 'Com could not figure out the code.'
+      puts @player_role == 'b' ? "You lose. Secret code was '#{@secret_code}'." : 'Com could not figure out the code.'
     end
   end
 end
