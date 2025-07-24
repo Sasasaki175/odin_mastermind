@@ -14,6 +14,7 @@ class MasterMind
 
     puts 'Choose 4 pick colors from Blue, Green, Orange, Purple, Red, Yellow and concatenate the initials. e.g. bggr, rbrp, yogp.'
     
+    #You can guess the code 10 times until you get it correct or game over
     10.times do
       @player_pick = PlayerPick.new.get_player_input
       guesses_left -= 1
