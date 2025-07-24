@@ -1,5 +1,5 @@
-class PlayerPick
-  PICK_COLORS = %w[b g o p r y]
+class CodePick
+  COLORS = %w[b g o p r y].freeze
 
   def get_player_input
     loop do
@@ -11,9 +11,14 @@ class PlayerPick
     @player_input
   end
 
+  #Picks 4 random picks
+  def random_pick
+    Array.new(4) { COLORS.sample }.join
+  end
+
   private
 
   def valid_player_pick?(pick)
-    pick.length == 4 && pick.chars.all? { |chr| PICK_COLORS.include?(chr) }
+    pick.length == 4 && pick.chars.all? { |chr| COLORS.include?(chr) }
   end
 end
