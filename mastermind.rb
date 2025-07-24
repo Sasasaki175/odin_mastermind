@@ -10,7 +10,7 @@ class MasterMind
 
   def choose_role
     puts 'Do you want to play as Codebreaker or Codemaker.'
-    puts "Input Codebreaker: 'b' or Codemaker: 'm'"
+    puts "Input 'b': Codebreaker or 'm': Codemaker"
 
     loop do
       @player_role = gets.chomp
