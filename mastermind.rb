@@ -3,7 +3,7 @@ require_relative 'lib/player_pick'
 
 class MasterMind
   def game_start
-    @secret_code = SecretCode.new.cpu_pick.join
+    @secret_code = SecretCode.new.random_pick
     play_game
   end
 
@@ -13,7 +13,7 @@ class MasterMind
     guesses_left = 10
 
     puts 'Choose 4 pick colors from Blue, Green, Orange, Purple, Red, Yellow and concatenate the initials. e.g. bggr, rbrp, yogp.'
-
+    
     10.times do
       @player_pick = PlayerPick.new.get_player_input
       guesses_left -= 1
