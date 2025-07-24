@@ -1,8 +1,23 @@
-require_relative 'lib/player_pick'
+require_relative 'lib/code_pick'
 
 class MasterMind
   def game_start
-    @secret_code = CodePick.new.random_pick
+    puts 'Do you want to play as Codebreaker or Codemaker.'
+    puts "Input Codebreaker: 'b' or Codemaker: 'm'"
+
+    loop do
+      @human_role = gets.chomp
+      break if ['b', 'm'].include?(@human_role)
+      puts 'Invalid input please try again.'
+    end
+
+    if @human_role == 'b'
+      @secret_code = CodePick.new.random_pick
+    else
+      puts 'Choose 4 pick colors from Blue, Green, Orange, Purple, Red, Yellow and concatenate the initials as secret code. e.g. bggr, rbrp, yogp.'
+      @secret_code = CodePick.new.get_player_input
+    end
+
     play_game
   end
 
