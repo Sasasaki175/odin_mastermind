@@ -1,9 +1,8 @@
-require_relative 'lib/secret_code'
 require_relative 'lib/player_pick'
 
 class MasterMind
   def game_start
-    @secret_code = SecretCode.new.random_pick
+    @secret_code = CodePick.new.random_pick
     play_game
   end
 
@@ -16,7 +15,7 @@ class MasterMind
     
     #You can guess the code 10 times until you get it correct or game over
     10.times do
-      @player_pick = PlayerPick.new.get_player_input
+      @player_pick = CodePick.new.get_player_input
       guesses_left -= 1
       puts "Correct position: #{match_chr(@secret_code, @player_pick)} Include number: #{include_chr(@secret_code, @player_pick)}"
       break if @secret_code == @player_pick
