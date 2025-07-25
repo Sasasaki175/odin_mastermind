@@ -34,7 +34,7 @@ class MasterMind
   end
 
   def play_game
-    @matched_picks = Array.new(4)
+    @saved_picks = Array.new(4)
 
     if @player_role == 'b'
       puts 'Choose 4 pick colors from Blue, Green, Orange, Purple, Red, Yellow '
@@ -56,10 +56,10 @@ class MasterMind
 
       puts "Com guess: '#{@breaker_pick}'" if @player_role == 'm'
 
-      puts "Correct position: #{positions_matched(@secret_code, @breaker_pick)}"
-      puts "Correct color: #{colors_matched(@secret_code, @breaker_pick)}"
+      puts "Correct position: #{matched_position_count(@secret_code, @breaker_pick)}"
+      puts "Correct color: #{matched_color_count(@secret_code, @breaker_pick)}"
       
-      @matched_picks = matching_picks(@secret_code, @breaker_pick)
+      @saved_picks = matching_picks(@secret_code, @breaker_pick)
 
       break if @secret_code == @breaker_pick
 
@@ -72,17 +72,17 @@ class MasterMind
     @breaker_pick = if @player_role == 'b'
                       CodePick.new.player_input
                     else
-                      CodePick.new.com_pick(@matched_picks)
+                      CodePick.new.com_pick(@saved_picks)
                     end
   end
 
   # Compare two strings and return number of characters that match including position
-  def positions_matched(string_a, string_b)
+  def matched_position_count(string_a, string_b)
     4.times.count { |i| string_a[i] == string_b[i] }
   end
 
   # Count and return number of shared characters
-  def colors_matched(string_a, string_b)
+  def matched_color_count(string_a, string_b)
     inclusion = 0
 
     string_b.chars.uniq.each do |chr|
@@ -94,7 +94,12 @@ class MasterMind
 
   # Returns an array with the matched color picks and nil
   def matching_picks(string_a, string_b)
-    4.times.map { |i| string_a[i] == string_b[i] ? string_a[i] : nil }
+    wrong_position_count = matched_color_count(string_a, string_b) - matched_position_count(string_a, string_b)
+    matched_picks = 4.times.map { |i| string_a[i] == string_b[i] ? string_a[i] : nil }
+    unmatched_code = 4.times.map { |i| string_a[i] == string_b[i] ? nil : string_a[i] }
+    unmatched_picks = 4.times.map { |i| string_a[i] == string_b[i] ? nil : string_b[i] }
+    saved_colors = unmatched_picks.compact.map { |pick| unmatched_code.include?(pick) ? pick : nil }.shuffle
+    return saved_picks = matched_picks.map { |pick| pick.nil? ? saved_colors.pop : pick }
   end
 
   def did_breaker_win
