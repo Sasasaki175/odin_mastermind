@@ -94,12 +94,11 @@ class MasterMind
 
   # Returns an array with the matched color picks and nil
   def matching_picks(string_a, string_b)
-    wrong_position_count = matched_color_count(string_a, string_b) - matched_position_count(string_a, string_b)
     matched_picks = 4.times.map { |i| string_a[i] == string_b[i] ? string_a[i] : nil }
     unmatched_code = 4.times.map { |i| string_a[i] == string_b[i] ? nil : string_a[i] }
     unmatched_picks = 4.times.map { |i| string_a[i] == string_b[i] ? nil : string_b[i] }
     saved_colors = unmatched_picks.compact.map { |pick| unmatched_code.include?(pick) ? pick : nil }.shuffle
-    return saved_picks = matched_picks.map { |pick| pick.nil? ? saved_colors.pop : pick }
+    matched_picks.map { |pick| pick.nil? ? saved_colors.pop : pick }
   end
 
   def did_breaker_win
